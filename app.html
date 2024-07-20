@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>APP Name: Coding Challenge by Shawn Smith</title>
+    <title>Mortgage Calculator</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -45,7 +45,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.html">
                     <img src="/img/(Looka Blue)Initials and Logo.png" width="30" class="d-inline-block align-text-top">
-                    APP NAME
+                    Mortgage Calculator
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link"  href="index.html">Home</a>
+                            <a class="nav-link" href="index.html">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="app.html">The App</a>
@@ -74,17 +74,73 @@
         </nav>
     </header>
     <main>
-        <div class="container mt-5">
-            <h1>APP UI GOES HERE</h1>
-            <input id="message" placeholder="Enter a Message" class="form-control" value="Hello World">
-            <button id="btnSubmit" type="button" class="btn btn-primary mt-3">Display Message</button>
-            <div class="alert alert-danger mt-5 p-4" role="alert" id="alertMessage">
-                <!--Message Goes Here-->
-                THIS WILL CHANGE!!!
-            </div>
-        </div>  
+        <container class="mt-5">
+            <div class="row ">
+                <!-- Calculate section -->
+                <div class="col-4 border border-danger">
 
+                    <label class="form-label" for="loanAmount">Loan Amount:</label>
+                    <input id="loanAmount" type="number" class="form-control" value="">
+
+                    <label class="form-label" for="termOfMonths">Term (Months):</label>
+                    <input id="termOfMonths" type="number" class="form-control" value="">
+
+                    <label class="form-label" for="loanInterestRate">Interest Rate:</label>
+                    <input id="loanInterestRate" type="number" class="form-control" value="">
+
+                    <button type="submit" class="btn btn-danger mt-4" id="">Calculate</button>
+                </div>
+                <!--Monthly payments section-->
+                <div class="col-8 border border-danger">
+                    
+                    <label class="form-label" for="totalMonthlyPayments"><h2>Your Monthly payments</h2></label>
+                    <input id="totalMonthlyPayments" type="number" class="form-control" value="">
+
+                    <label class="form-label" for="totalPrincipal">Total Principal:</label>
+                    <input id="totalPrincipal" type="number" class="form-control" value="">
+
+                    <label class="form-label" for="totalInterst">Total Interest:</label>
+                    <input id="totalInterst" type="number" class="form-control" value="">
+
+                    <label class="form-label" for="totalCost">Total Cost:</label>
+                    <input id="totalCost" type="number" class="form-control" value="">
+                </div>
+            </div>
+
+            <!--Amortized Payment Table-->
+            <div>
+                <table class="table table-striped" id="amortizedTable">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Payment</th>
+                            <th>Principal</th>
+                            <th>Interest</th>
+                            <th>Total Interest</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="amortizedTableBody">
+                        <!--Data Goes Here-->
+                    </tbody>
+                </table>
+            </div>
+
+            <!--Templates-->
+            <template id="amortizedTable-Template">
+                <tr>
+                    <td month-data></td>
+                    <td payment-data></td>
+                    <td principal-data></td>
+                    <td interest-data></td>
+                    <td totalInterest-data></td>
+                    <td balance-data></td>
+                </tr>
+            </template>
+
+        </div>
     </main>
+
     <footer class="py-3">
         <div class="container-fluid">
             <div class="row row-cols-1 row-cols-md-3 gy-2 justify-content-center">
@@ -107,14 +163,10 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+        </script>
 
     <!--Custom JS-->
     <script src="/js/site.js"></script>
-
-    <script>
-        document.getElementById("btnSubmit").addEventListener("click", getValues2);
-    </script>
 
 </body>
 
