@@ -1,55 +1,72 @@
+//Gather the HTML values from app.html by their ID.
 function getValues(){
 
+    //Variable Declarations
     let loanAmountInput = document.getElementById("loanAmount").value; 
     let termOfMonthsInput = document.getElementById("termOfMonths").value; 
     let loanInterestRateInput = document.getElementById("loanInterestRateInput").value; 
-
-    //call calulation funtion(maths)
-
-    //verify inputs that everything that is a decimal number.
-    displayStuff();
-}
-
-function maths(){
-
-//math() library(?) object(?) method
-
-// Total Monthly Payment = (amount loaned) * (rate / 1200) / ( 1 - (1 + rate/1200)^(-Number of Months) )
-
-// Before the very first month, Remaining Balance = the amount of the loan
-
-// Interest Payment = Previous Remaining Balance * rate/1200
-
-// Principal Payment = Total Monthly Payment - Interest Payment
-
-// At the end of each month, Remaining Balance = Previous Remaining Balance - Principal Payment
-
-}
-
-function displayStuff(){
-    let template = document.getElementById("amortizedTable-Template");
-    let tableBody = document.getElementById("amortizedTableBody");
-
-    //Clear the table data first.
-    amortizedTableBody.innerHTML = "";
-
-  //Loop over the items and display them.
-    for(let index=0; index < moneys.length; index ++){
-    let moneyEvent = moneys[index];
-
-    //Get a document fragment from the template.
-    let moneyRow = document.importNode(template.content, true);
-
-    //Select the td based on an attribute.
-    moneyRow.querySelector("[month-data]").textContent = moneyEvent.month;
-    moneyRow.querySelector("[payment-data]").textContent = moneyEvent.city;
-    moneyRow.querySelector("[principal-data]").textContent = moneyEvent.state;
-    moneyRow.querySelector("[interest-data]").textContent = moneyEvent.attendance;
-    moneyRow.querySelector("[totalInterest-data]").textContent = moneyEvent.attendance;
-    moneyRow.querySelector("[balance-data]").textContent = moneyEvent.attendance;
-
     
 
-    amortizedTableBody.appendChild(moneyRow);
-  }
+    //verify inputs so that values are a decimal/integer.
+    loanAmountInput = parseFloat(loanAmountInput);
+    termOfMonthsInput = parseFloat(termOfMonthsInput);
+    loanInterestRateInput = parseFloat(loanInterestRateInput);
+    
+    const amortizationData = calculateMortgage(loanAmountInput, termOfMonthsInput, loanInterestRateInput);
+
+    displayAmortizedTable(amortizationData);
+
+}  
+function calculateMortgage(loanAmountInput, termOfMonthsInput, loanInterestRateInput) {
+
+    const loanAmount =loanAmountInput;
+    const annualInterestRate =loanInterestRateInput;
+
+    const termYears = termOfMonthsInput/12; 
+    const monthlyInterestRate = annualInterestRate / 1200;
+    const totalPayments = termYears * 12;
+
+    const amortizationTable = [];
+     cumInterest =0.0;
+    let remainingBalance = loanAmount;
+    for (let month = 1; month <= totalPayments; month++) {
+
+        const interestPayment = remainingBalance * monthlyInterestRate;
+
+        const principalPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -totalPayments));
+        
+        remainingBalance -= principalPayment;
+        cumInterest += interestPayment;
+
+        amortizationTable.push({
+            month,
+            payment: principalPayment + interestPayment,
+            principal: principalPayment,
+            interest: interestPayment,
+            totalInterest: cumInterest,
+            balance: remainingBalance,
+        });
+    }
+
+    return amortizationTable;
+}
+
+function displayAmortizedTable(amortizationTable) {
+    const tableBody = document.getElementById("amortizedTableBody");
+
+    // Clear any existing rows
+    tableBody.innerHTML = "";   
+
+    amortizationTable.forEach((data) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${data.month}</td>
+            <td>$${data.payment.toFixed(2)}</td>
+            <td>$${data.principal.toFixed(2)}</td>
+            <td>$${data.interest.toFixed(2)}</td>
+            <td>$${data.totalInterest.toFixed(2)}</td>
+            <td>$${data.balance.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(row);
+    });
 }
