@@ -4,15 +4,14 @@ function getValues(){
     //Variable Declarations
     let loanAmountInput = document.getElementById("loanAmount").value; 
     let termOfMonthsInput = document.getElementById("termOfMonths").value; 
-    let loanInterestRateInput = document.getElementById("loanInterestRateInput").value; 
-    
+    let loanInterestRateInput = document.getElementById("loanInterestRateInput").value;     
 
     //verify inputs so that values are a decimal/integer.
     loanAmountInput = parseFloat(loanAmountInput);
-    termOfMonthsInput = parseFloat(termOfMonthsInput);
+    termOfMonthsInput = parseInt(termOfMonthsInput);
     loanInterestRateInput = parseFloat(loanInterestRateInput);
     
-    const amortizationData = calculateMortgage(loanAmountInput, termOfMonthsInput, loanInterestRateInput);
+    let amortizationData = calculateMortgage(loanAmountInput, termOfMonthsInput, loanInterestRateInput);
 
     displayAmortizedTable(amortizationData);
 
@@ -27,8 +26,11 @@ function calculateMortgage(loanAmountInput, termOfMonthsInput, loanInterestRateI
     const totalPayments = termYears * 12;
 
     const amortizationTable = [];
+
      cumInterest =0.0;
+     
     let remainingBalance = loanAmount;
+
     for (let month = 1; month <= totalPayments; month++) {
 
         const interestPayment = remainingBalance * monthlyInterestRate;
@@ -40,8 +42,8 @@ function calculateMortgage(loanAmountInput, termOfMonthsInput, loanInterestRateI
 
         amortizationTable.push({
             month,
-            payment: principalPayment + interestPayment,
-            principal: principalPayment,
+            payment: principalPayment,
+            principal: principalPayment + interestPayment,
             interest: interestPayment,
             totalInterest: cumInterest,
             balance: remainingBalance,
